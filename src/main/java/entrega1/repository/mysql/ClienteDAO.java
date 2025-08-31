@@ -2,6 +2,7 @@ package entrega1.repository.mysql;
 
 import java.sql.Connection;
 
+import entrega1.dao.DAOCliente;
 import entrega1.entities.Cliente;
 
 import java.sql.PreparedStatement;
@@ -9,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class ClienteDAO {
+public class ClienteDAO implements DAOCliente {
     private Connection conexion;
 
     public ClienteDAO(Connection conexion) {
