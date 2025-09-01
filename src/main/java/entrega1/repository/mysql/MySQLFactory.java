@@ -17,9 +17,7 @@ public class MySQLFactory extends AbstractFactory {
 
     //TODO Implementar
     @Override
-    public ProductoDAO getProductoDAO() {
-        return null;
-    }
+    public ProductoDAO getProductoDAO() {return new ProductoDAO(ConnectionManagerMySQL.getInstance().getConnection());}
 
     @Override
     public ClienteDAO getClienteDAO() {

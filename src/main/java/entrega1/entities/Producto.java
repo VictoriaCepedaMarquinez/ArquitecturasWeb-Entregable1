@@ -11,7 +11,8 @@ public class Producto {
     public Producto(){
 
     }
-    public Producto(String nombre, float valor){
+    public Producto(int idProducto,String nombre, float valor){
+        this.idProducto = idProducto;
         this.nombre = nombre;
         this.valor = valor;
     }

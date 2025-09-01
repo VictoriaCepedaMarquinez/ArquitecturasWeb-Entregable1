@@ -1,8 +1,10 @@
 package entrega1.utils;
 
 import entrega1.entities.Cliente;
+import entrega1.entities.Producto;
 import entrega1.factory.AbstractFactory;
 import entrega1.repository.mysql.ClienteDAO;
+import entrega1.repository.mysql.ProductoDAO;
 import org.apache.commons.csv.CSVRecord;
 
 import java.lang.reflect.InvocationTargetException;
@@ -107,6 +109,20 @@ public class HelperMySQL {
             );
             cliente.insert(nuevoCliente);
         }
+
+        ProductoDAO producto = chosenFactory.getProductoDAO();
+        registros = LectorCSV.leerCSV("src/main/resources/data/productos.csv");
+        for (CSVRecord row : registros) {
+            Producto nuevoProducto = new Producto(
+                    Integer.parseInt(row.get("idProducto")),
+                    row.get("nombre"),
+                    Float.parseFloat(row.get("valor"))
+
+            );
+            producto.insert(nuevoProducto);
+        }
+
+
     }
 
 

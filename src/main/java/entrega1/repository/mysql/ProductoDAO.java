@@ -44,10 +44,11 @@ public class ProductoDAO implements DAOProducto {
     @Override
     public void insert(Producto nuevoProducto) {
         try{
-            String statement = "INSERT INTO Producto (nombre,valor) VALUES (?,?)";
+            String statement = "INSERT INTO Producto (idProducto,nombre,valor) VALUES (?,?,?)";
             PreparedStatement ps = this.conn.prepareStatement(statement);
-            ps.setString(1,nuevoProducto.getNombre());
-            ps.setFloat(2,nuevoProducto.getValor());
+            ps.setInt(1, nuevoProducto.getIdProducto());
+            ps.setString(2,nuevoProducto.getNombre());
+            ps.setFloat(3,nuevoProducto.getValor());
             ps.executeUpdate();
             ps.close();
         }
