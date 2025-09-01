@@ -33,7 +33,6 @@ public class ProductoDAO implements DAOProducto {
             }
             rs.close();
             ps.close();
-            this.conn.commit();
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -51,7 +50,6 @@ public class ProductoDAO implements DAOProducto {
             ps.setFloat(2,nuevoProducto.getValor());
             ps.executeUpdate();
             ps.close();
-            this.conn.commit();
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -68,7 +66,6 @@ public class ProductoDAO implements DAOProducto {
             ps.setInt(3,nuevoProducto.getIdProducto());
             ps.executeUpdate();
             ps.close();
-            this.conn.commit();
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -83,7 +80,6 @@ public class ProductoDAO implements DAOProducto {
             ps.setInt(1, id);
             ps.executeUpdate();
             ps.close();
-            this.conn.commit();
         }
         catch (SQLException e){
             e.printStackTrace();

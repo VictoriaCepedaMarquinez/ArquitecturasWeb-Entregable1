@@ -28,7 +28,6 @@ public final class ConnectionManagerMySQL {
 
             // Establecer la conexión
             this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            connection.setAutoCommit(false);
             System.out.println("Conexión establecida correctamente con MySQL.");
         } catch (ClassNotFoundException e) {
             System.err.println("Error: No se encontró el driver de MySQL.");
