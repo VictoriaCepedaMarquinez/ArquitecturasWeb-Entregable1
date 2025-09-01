@@ -3,11 +3,12 @@ package entrega1.entities;
 public class Cliente {
     private int idCliente;
     private String nombre;
-    private int edad;
+    private String email;
 
-    public Cliente( String nombre, int edad) {
+    public Cliente(int idCliente, String nombre, String email) {
+        this.idCliente = idCliente;
         this.nombre = nombre;
-        this.edad = edad;
+        this.email = email;
     }
 
     public Cliente() {
@@ -29,11 +30,11 @@ public class Cliente {
         this.nombre = nombre;
     }
 
-    public int getEdad() {
-        return edad;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

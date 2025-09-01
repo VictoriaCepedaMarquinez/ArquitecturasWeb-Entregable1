@@ -1,9 +1,6 @@
 package entrega1.factory;
 
-import entrega1.repository.mysql.ClienteDAO;
-import entrega1.repository.mysql.FacturaDAO;
-import entrega1.repository.mysql.FacturaProductoDAO;
-import entrega1.repository.mysql.ProductoDAO;
+import entrega1.repository.mysql.*;
 
 public abstract class AbstractFactory {
     public static final int MYSQL_JDBC = 1;
@@ -12,7 +9,7 @@ public abstract class AbstractFactory {
     public static AbstractFactory getInstance(int whichFactory) {
         switch (whichFactory) {
             case MYSQL_JDBC : {
-//                return MySQLDAOFactory.getInstance();
+              return MySQLFactory.getInstance();
             }
             case DERBY_JDBC: return null;
             default: return null;

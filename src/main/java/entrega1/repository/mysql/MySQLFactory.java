@@ -1,9 +1,18 @@
 package entrega1.repository.mysql;
 
 import entrega1.factory.AbstractFactory;
+import entrega1.factory.ConnectionManagerMySQL;
 
 public class MySQLFactory extends AbstractFactory {
+    private static MySQLFactory instance;
 
+
+    public static synchronized MySQLFactory getInstance() {
+        if (instance == null) {
+            instance = new MySQLFactory();
+        }
+        return instance;
+    }
 
 
     //TODO Implementar
@@ -14,7 +23,7 @@ public class MySQLFactory extends AbstractFactory {
 
     @Override
     public ClienteDAO getClienteDAO() {
-        return null;
+        return new ClienteDAO(ConnectionManagerMySQL.getInstance().getConnection());
     }
 
     @Override

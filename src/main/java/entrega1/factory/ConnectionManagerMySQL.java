@@ -15,9 +15,9 @@ public final class ConnectionManagerMySQL {
     private Connection connection; // java.sql.Connection (para SQL)
 
     // --- Configuración de conexión ---
-    private static final String URL = "jdbc:mysql://localhost:3306/exampleDB";
+    private static final String URL = "jdbc:mysql://localhost:3306/Entregable1";
     private static final String USER = "root";
-    private static final String PASSWORD = "password"; // contraseña vacía
+    private static final String PASSWORD = ""; // contraseña vacía
 
 
     // --- Constructor privado ---

@@ -1,5 +1,10 @@
 package entrega1.utils;
 
+import entrega1.entities.Cliente;
+import entrega1.factory.AbstractFactory;
+import entrega1.repository.mysql.ClienteDAO;
+import org.apache.commons.csv.CSVRecord;
+
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -41,7 +46,7 @@ public class HelperMySQL {
         String tableCliente = "CREATE TABLE IF NOT EXISTS Cliente(" +
                 "idCliente INT NOT NULL, " +
                 "nombre VARCHAR(150), " +
-                "edad INT NOT NULL, " +
+                "email VARCHAR(255), " +
                 "CONSTRAINT idCliente_pk PRIMARY KEY (idCliente));" ;
         this.conn.prepareStatement(tableCliente).execute();
 
@@ -69,6 +74,39 @@ public class HelperMySQL {
         this.conn.prepareStatement(tableFacturaProducto).execute();
 
 
+    }
+
+    public void dropTables() throws SQLException {
+
+        String dropFacturaProducto = "DROP TABLE IF EXISTS FacturaProducto";
+        this.conn.prepareStatement(dropFacturaProducto).execute();
+
+        String dropFactura = "DROP TABLE IF EXISTS Factura";
+        this.conn.prepareStatement(dropFactura).execute();
+
+        String dropCliente = "DROP TABLE IF EXISTS Cliente";
+        this.conn.prepareStatement(dropCliente).execute();
+
+        String dropProducto = "DROP TABLE IF EXISTS Producto";
+        this.conn.prepareStatement(dropProducto).execute();
+
+    }
+
+
+
+    public void rellenarTablas(){
+        AbstractFactory chosenFactory = AbstractFactory.getInstance(1);
+        ClienteDAO cliente = chosenFactory.getClienteDAO();
+
+        Iterable<CSVRecord> registros = LectorCSV.leerCSV("src/main/resources/data/clientes.csv");
+        for (CSVRecord row : registros) {
+            Cliente nuevoCliente = new Cliente(
+                    Integer.parseInt(row.get("idCliente")),
+                    row.get("nombre"),
+                    row.get("email")
+            );
+            cliente.insert(nuevoCliente);
+        }
     }
 
 
