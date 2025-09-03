@@ -1,9 +1,11 @@
 package entrega1.utils;
 
 import entrega1.entities.Cliente;
+import entrega1.entities.Factura;
 import entrega1.entities.Producto;
 import entrega1.factory.AbstractFactory;
 import entrega1.repository.mysql.ClienteDAO;
+import entrega1.repository.mysql.FacturaDAO;
 import entrega1.repository.mysql.ProductoDAO;
 import org.apache.commons.csv.CSVRecord;
 
@@ -120,6 +122,16 @@ public class HelperMySQL {
 
             );
             producto.insert(nuevoProducto);
+        }
+
+        FacturaDAO factura = chosenFactory.getFacturaDAO();
+        registros = LectorCSV.leerCSV("src/main/resources/data/facturas.csv");
+        for (CSVRecord row : registros) {
+            Factura nuevaFactura = new Factura(
+                    Integer.parseInt(row.get("idFactura")),
+                    Integer.parseInt(row.get("idCliente"))
+            );
+            factura.insert(nuevaFactura);
         }
 
 

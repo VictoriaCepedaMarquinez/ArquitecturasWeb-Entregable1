@@ -26,7 +26,7 @@ public class MySQLFactory extends AbstractFactory {
 
     @Override
     public FacturaDAO getFacturaDAO() {
-        return null;
+        return new FacturaDAO(ConnectionManagerMySQL.getInstance().getConnection());
     }
 
     @Override
