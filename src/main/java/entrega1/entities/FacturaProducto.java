@@ -2,32 +2,30 @@ package entrega1.entities;
 
 public class FacturaProducto {
 
-    private Factura idFactura;
-    private Producto idProducto;
+    private Factura factura;
+    private Producto producto;
     private int cantidad;
 
-    public FacturaProducto(Factura idFactura, Producto idProducto, int cantidad) {
-        this.idFactura = idFactura;
-        this.idProducto = idProducto;
+    public FacturaProducto(Factura factura, Producto producto, int cantidad) {
+        this.factura = factura;
+        this.producto = producto;
         this.cantidad = cantidad;
     }
 
-    public FacturaProducto() {}
-
-    public Factura getIdFactura() {
-        return idFactura;
+    public Factura getFactura() {
+        return factura;
     }
 
-    public void setIdFactura(Factura idFactura) {
-        this.idFactura = idFactura;
+    public void setFactura(Factura factura) {
+        this.factura = factura;
     }
 
-    public Producto getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(Producto idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public int getCantidad() {
