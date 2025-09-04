@@ -46,6 +46,15 @@ public class FacturaProductoDAO implements DAOFacturaProducto {
 
 
     public void insert(FacturaProducto facturaProducto) {
+            final String sql = "INSERT INTO FacturaProducto (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
+            try(PreparedStatement ps = cn.prepareStatement(sql)) {
+                ps.setInt(1, facturaProducto.getFactura().getIdFactura());
+                ps.setInt(2, facturaProducto.getProducto().getIdProducto());
+                ps.setInt(3, facturaProducto.getCantidad());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException("Error al insertar la factura con id: " + facturaProducto.getFactura().getIdFactura(), e);
+            }
 
     }
 

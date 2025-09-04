@@ -31,6 +31,6 @@ public class MySQLFactory extends AbstractFactory {
 
     @Override
     public FacturaProductoDAO getFacturaProductoDAO() {
-        return null;
+        return new FacturaProductoDAO(ConnectionManagerMySQL.getInstance().getConnection());
     }
 }
