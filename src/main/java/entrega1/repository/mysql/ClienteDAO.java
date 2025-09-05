@@ -33,7 +33,7 @@ public class ClienteDAO implements DAOCliente {
 
     public void update(Cliente c) {
         try {
-            String sql = "UPDATE CLIENTE SET nombre = ?, email = ? WHERE idCliente = ?";
+            String sql = "UPDATE Cliente SET nombre = ?, email = ? WHERE idCliente = ?";
             PreparedStatement stmt = conexion.prepareStatement(sql);
             stmt.setString(1, c.getNombre());
             stmt.setString(2, c.getEmail());
@@ -47,7 +47,7 @@ public class ClienteDAO implements DAOCliente {
 
     public void delete (int id) {
         try {
-            String sql = "DELETE FROM CLIENTE WHERE idCliente = ?";
+            String sql = "DELETE FROM Cliente WHERE idCliente = ?";
             PreparedStatement stmt = conexion.prepareStatement(sql);
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -60,13 +60,13 @@ public class ClienteDAO implements DAOCliente {
     public Cliente get(int id) {
         Cliente cliente = null;
         try{
-            String sql = " SELECT * FROM CLIENTE WHERE idCliente = ?";
+            String sql = " SELECT * FROM Cliente WHERE idCliente = ?";
             PreparedStatement stmt = conexion.prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()){
                 cliente = new Cliente();
-                cliente.setIdCliente(rs.getInt("id"));
+                cliente.setIdCliente(rs.getInt("idCliente"));
                 cliente.setNombre(rs.getString("nombre"));
                 cliente.setEmail(rs.getString("email"));
             }
