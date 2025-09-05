@@ -1,10 +1,13 @@
 package entrega1.utils;
 
 import entrega1.entities.Cliente;
+import entrega1.entities.FacturaProducto;
 import entrega1.entities.Factura;
 import entrega1.entities.Producto;
 import entrega1.factory.AbstractFactory;
 import entrega1.repository.mysql.ClienteDAO;
+import entrega1.repository.mysql.FacturaDAO;
+import entrega1.repository.mysql.FacturaProductoDAO;
 import entrega1.repository.mysql.FacturaDAO;
 import entrega1.repository.mysql.ProductoDAO;
 import org.apache.commons.csv.CSVRecord;
@@ -135,11 +138,19 @@ public class HelperMySQL {
         }
 
 
+        FacturaProductoDAO facturaProducto = chosenFactory.getFacturaProductoDAO();
+        registros = LectorCSV.leerCSV("src/main/resources/data/factura-productos.csv");
+        ProductoDAO productoDAO = new ProductoDAO(conn);
+        FacturaDAO  facturaDAO = new FacturaDAO(conn);
+        for (CSVRecord row : registros) {
+
+            FacturaProducto nuevaFacturaProducto = new FacturaProducto(
+                    facturaDAO.get(Integer.parseInt(row.get("idFactura"))),
+                    productoDAO.get(Integer.parseInt(row.get("IdProducto"))),
+                    Integer.parseInt(row.get("cantidad"))
+            );
+            facturaProducto.insert(nuevaFacturaProducto);
+
+        }
     }
-
-
-
-
-
-
 }
