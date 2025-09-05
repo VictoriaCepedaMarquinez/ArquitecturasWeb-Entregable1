@@ -139,14 +139,14 @@ public class HelperMySQL {
 
 
         FacturaProductoDAO facturaProducto = chosenFactory.getFacturaProductoDAO();
-        registros = LectorCSV.leerCSV("src/main/resources/data/factura-productos.csv");
+        registros = LectorCSV.leerCSV("src/main/resources/data/facturas-productos.csv");
         ProductoDAO productoDAO = new ProductoDAO(conn);
         FacturaDAO  facturaDAO = new FacturaDAO(conn);
         for (CSVRecord row : registros) {
 
             FacturaProducto nuevaFacturaProducto = new FacturaProducto(
                     facturaDAO.get(Integer.parseInt(row.get("idFactura"))),
-                    productoDAO.get(Integer.parseInt(row.get("IdProducto"))),
+                    productoDAO.get(Integer.parseInt(row.get("idProducto"))),
                     Integer.parseInt(row.get("cantidad"))
             );
             facturaProducto.insert(nuevaFacturaProducto);
