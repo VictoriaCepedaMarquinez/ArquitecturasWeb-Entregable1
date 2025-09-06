@@ -17,6 +17,7 @@ public class FacturaProductoDAO implements DAOFacturaProducto {
     public FacturaProductoDAO(Connection cn) {
         this.cn = cn;
     }
+    //TODO: preguntar si hay que agregar otros gets personalizados (cant productos con x facturas etc)
 
     public FacturaProducto get(int id1, int id2) {
         final String sql = "SELECT cantidad FROM FacturaProducto WHERE idFactura = ? AND idProducto = ?";
@@ -27,13 +28,15 @@ public class FacturaProductoDAO implements DAOFacturaProducto {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    FacturaDAO facturaDAO = new FacturaDAO(cn); //esto podria hacerse con inyeccion para no crear 2
-                    ProductoDAO productoDAO = new ProductoDAO(cn);// preguntar
+                    FacturaDAO facturaDAO = new FacturaDAO(cn); //TODO:esto podria hacerse con inyeccion para no crear 2
+                    ProductoDAO productoDAO = new ProductoDAO(cn);// TODO:preguntar
 
                     Factura factura = facturaDAO.get(id1);
                     Producto producto = productoDAO.get(id2);
+                    rs.close();
+                    cn.close();
 
-                    return new FacturaProducto(factura, producto, rs.getInt(3));
+                    return new FacturaProducto(factura, producto, rs.getInt(1));
                 } else {
                     return null;
                 }
@@ -44,7 +47,6 @@ public class FacturaProductoDAO implements DAOFacturaProducto {
         }
     }
 
-
     public void insert(FacturaProducto facturaProducto) {
             final String sql = "INSERT INTO FacturaProducto (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
             try(PreparedStatement ps = cn.prepareStatement(sql)) {
@@ -52,6 +54,7 @@ public class FacturaProductoDAO implements DAOFacturaProducto {
                 ps.setInt(2, facturaProducto.getProducto().getIdProducto());
                 ps.setInt(3, facturaProducto.getCantidad());
                 ps.executeUpdate();
+                cn.close();
             } catch (SQLException e) {
                 throw new RuntimeException("Error al insertar la factura con id: " + facturaProducto.getFactura().getIdFactura(), e);
             }
@@ -59,12 +62,42 @@ public class FacturaProductoDAO implements DAOFacturaProducto {
     }
 
     public void update(FacturaProducto facturaProducto) {
+        try {
+             final String sql = "UPDATE FacturaProducto SET cantidad = ? WHERE idFactura = ? AND idProducto = ?";
+            PreparedStatement ps = cn.prepareStatement(sql);
+            /* TODO: Solo se podria modificar la cantidad, porque los otros datos son ids y no puede
+                existir factura producto sin que existan ambas entidades
+                creia que tenia que ir a cada factura y cada producto pero me acorde que solo
+                tenia ids y no se pueden modificar
+            FacturaDAO facturaDAO = new FacturaDAO(cn); //esto podria hacerse con inyeccion para no crear 2
+            ProductoDAO productoDAO = new ProductoDAO(cn);// preguntar
+
+            Factura factura = facturaDAO.get(facturaProducto.getFactura().getIdFactura());
+            Producto producto = productoDAO.get(facturaProducto.getProducto().getIdProducto());
+             */
+            ps.setInt(1, facturaProducto.getCantidad());
+            ps.executeUpdate();
+            ps.close();
+            cn.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
-    public void delete(int i) {
+    public void delete(int idFactura, int idProducto) {
+        try {
+            final String sql = "DELETE FROM FacturaProducto WHERE idFactura = ? AND idProducto = ?";
+            PreparedStatement ps = cn.prepareStatement(sql);
+
+            ps.setInt(1, idFactura);
+            ps.setInt(2, idProducto);
+            ps.executeUpdate();
+            cn.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
 
     }
-
-
 
 }
