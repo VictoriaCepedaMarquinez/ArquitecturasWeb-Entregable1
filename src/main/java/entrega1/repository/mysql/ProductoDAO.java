@@ -1,6 +1,7 @@
 package entrega1.repository.mysql;
 
 import entrega1.dao.DAOProducto;
+import entrega1.dto.ProductoMasVendidoDTO;
 import entrega1.entities.Producto;
 
 import java.sql.Connection;
@@ -87,29 +88,29 @@ public class ProductoDAO implements DAOProducto {
         }
     }
 
-    public Producto productoMasVendido(){
-
-        String sql = "SELECT p.idProducto, p.nombre, p.valor " +
+    public ProductoMasVendidoDTO productoMasVendido() {
+        String sql = "SELECT p.idProducto, p.nombre, p.valor, " +
+                "SUM(p.valor * f.cantidad) AS recaudacion " +
                 "FROM Producto p " +
                 "JOIN FacturaProducto f ON p.idProducto = f.idProducto " +
                 "GROUP BY p.idProducto, p.nombre, p.valor " +
-                "ORDER BY SUM(p.valor * f.cantidad) DESC " +
+                "ORDER BY recaudacion DESC " +
                 "LIMIT 1";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery(sql)) {
+             ResultSet rs = stmt.executeQuery()) {
 
             if (rs.next()) {
-                return new Producto(
-                        rs.getInt("idProducto"),
+                return new ProductoMasVendidoDTO(
                         rs.getString("nombre"),
-                        rs.getFloat("valor")
+                        rs.getFloat("valor"),
+                        rs.getDouble("recaudacion")
                 );
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
+
 }

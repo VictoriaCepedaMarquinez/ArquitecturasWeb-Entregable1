@@ -1,6 +1,7 @@
 package entrega1;
 
 import entrega1.dao.DAOProducto;
+import entrega1.dto.ProductoMasVendidoDTO;
 import entrega1.entities.Cliente;
 import entrega1.entities.Factura;
 import entrega1.entities.Producto;
@@ -20,11 +21,16 @@ public class Main {
         helper.dropTables();
         helper.createTables();
         helper.rellenarTablas();
+
+        System.out.println("Ejercicio 3:");
         AbstractFactory chosenFactory = AbstractFactory.getInstance(1);
         ProductoDAO p1 =chosenFactory.getProductoDAO();
-
-        Producto p = p1.productoMasVendido();
+        ProductoMasVendidoDTO p = p1.productoMasVendido();
         System.out.println(p);
+
+        System.out.println();
+
+        System.out.println("Ejercicio 4:");
 
 
 
