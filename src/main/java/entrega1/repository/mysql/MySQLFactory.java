@@ -30,7 +30,9 @@ public class MySQLFactory extends AbstractFactory {
     }
 
     @Override
-    public FacturaProductoDAO getFacturaProductoDAO() {
-        return new FacturaProductoDAO(ConnectionManagerMySQL.getInstance().getConnection());
+    public FacturaProductoDAO getFacturaProductoDAO() { //TODO: Preguntar si asi esta bien la iyeccion de dependencias
+        return new FacturaProductoDAO(ConnectionManagerMySQL.getInstance().getConnection(),
+                MySQLFactory.getInstance().getFacturaDAO(),
+                MySQLFactory.getInstance().getProductoDAO());
     }
 }

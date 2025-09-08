@@ -13,11 +13,14 @@ import java.sql.SQLException;
 public class FacturaProductoDAO implements DAOFacturaProducto {
 
     private final Connection cn;
+    private final FacturaDAO facturaDAO;
+    private final ProductoDAO productoDAO;
 
-    public FacturaProductoDAO(Connection cn) {
+    public FacturaProductoDAO(Connection cn, FacturaDAO facturaDAO, ProductoDAO productoDAO) {
         this.cn = cn;
+        this.facturaDAO = facturaDAO;
+        this.productoDAO = productoDAO;
     }
-    //TODO: preguntar si hay que agregar otros gets personalizados (cant productos con x facturas etc)
 
     public FacturaProducto get(int id1, int id2) {
         final String sql = "SELECT cantidad FROM FacturaProducto WHERE idFactura = ? AND idProducto = ?";
@@ -28,8 +31,6 @@ public class FacturaProductoDAO implements DAOFacturaProducto {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    FacturaDAO facturaDAO = new FacturaDAO(cn); //TODO:esto podria hacerse con inyeccion para no crear 2
-                    ProductoDAO productoDAO = new ProductoDAO(cn);// TODO:preguntar
 
                     Factura factura = facturaDAO.get(id1);
                     Producto producto = productoDAO.get(id2);
@@ -48,33 +49,26 @@ public class FacturaProductoDAO implements DAOFacturaProducto {
     }
 
     public void insert(FacturaProducto facturaProducto) {
-            final String sql = "INSERT INTO FacturaProducto (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
-            try(PreparedStatement ps = cn.prepareStatement(sql)) {
-                ps.setInt(1, facturaProducto.getFactura().getIdFactura());
-                ps.setInt(2, facturaProducto.getProducto().getIdProducto());
-                ps.setInt(3, facturaProducto.getCantidad());
-                ps.executeUpdate();
-                cn.close();
-            } catch (SQLException e) {
-                throw new RuntimeException("Error al insertar la factura con id: " + facturaProducto.getFactura().getIdFactura(), e);
-            }
+        final String sql = "INSERT INTO FacturaProducto (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
+
+        try(PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, facturaProducto.getFactura().getIdFactura());
+            ps.setInt(2, facturaProducto.getProducto().getIdProducto());
+            ps.setInt(3, facturaProducto.getCantidad());
+            ps.executeUpdate();
+            cn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al insertar la factura con id: " + facturaProducto.getFactura().getIdFactura(), e);
+        }
 
     }
 
     public void update(FacturaProducto facturaProducto) {
-        try {
-             final String sql = "UPDATE FacturaProducto SET cantidad = ? WHERE idFactura = ? AND idProducto = ?";
-            PreparedStatement ps = cn.prepareStatement(sql);
-            /* TODO: Solo se podria modificar la cantidad, porque los otros datos son ids y no puede
-                existir factura producto sin que existan ambas entidades
-                creia que tenia que ir a cada factura y cada producto pero me acorde que solo
-                tenia ids y no se pueden modificar
-            FacturaDAO facturaDAO = new FacturaDAO(cn); //esto podria hacerse con inyeccion para no crear 2
-            ProductoDAO productoDAO = new ProductoDAO(cn);// preguntar
+        final String sql = "UPDATE FacturaProducto SET cantidad = ? WHERE idFactura = ? AND idProducto = ?";
 
-            Factura factura = facturaDAO.get(facturaProducto.getFactura().getIdFactura());
-            Producto producto = productoDAO.get(facturaProducto.getProducto().getIdProducto());
-             */
+        try {
+            PreparedStatement ps = cn.prepareStatement(sql);
+
             ps.setInt(1, facturaProducto.getCantidad());
             ps.executeUpdate();
             ps.close();
@@ -86,8 +80,9 @@ public class FacturaProductoDAO implements DAOFacturaProducto {
     }
 
     public void delete(int idFactura, int idProducto) {
+        final String sql = "DELETE FROM FacturaProducto WHERE idFactura = ? AND idProducto = ?";
+
         try {
-            final String sql = "DELETE FROM FacturaProducto WHERE idFactura = ? AND idProducto = ?";
             PreparedStatement ps = cn.prepareStatement(sql);
 
             ps.setInt(1, idFactura);

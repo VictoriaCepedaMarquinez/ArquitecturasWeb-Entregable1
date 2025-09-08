@@ -4,12 +4,11 @@ import entrega1.entities.Cliente;
 import entrega1.entities.Factura;
 import entrega1.entities.Producto;
 import entrega1.factory.AbstractFactory;
-import entrega1.repository.mysql.ClienteDAO;
-import entrega1.repository.mysql.FacturaDAO;
-import entrega1.repository.mysql.FacturaProductoDAO;
-import entrega1.repository.mysql.ProductoDAO;
+import entrega1.factory.ConnectionManagerMySQL;
+import entrega1.repository.mysql.*;
 import entrega1.utils.HelperMySQL;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public class Main {
@@ -19,6 +18,18 @@ public class Main {
         helper.dropTables();
         helper.createTables();
         helper.rellenarTablas();
+
+        // 1. Crear la conexión (recurso compartido)
+        Connection cn = ConnectionManagerMySQL.getInstance().getConnection();
+
+
+        // 2. Crear los DAOs principales
+        FacturaDAO facturaDAO = new FacturaDAO(cn);
+        ProductoDAO productoDAO = new ProductoDAO(cn);
+
+        // 3. Inyectar DAOs en el DAO compuesto
+        FacturaProductoDAO facturaProductoDAO = new FacturaProductoDAO(cn, facturaDAO, productoDAO);
+
 
     }
 }
