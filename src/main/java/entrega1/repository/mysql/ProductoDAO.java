@@ -86,4 +86,30 @@ public class ProductoDAO implements DAOProducto {
             e.printStackTrace();
         }
     }
+
+    public Producto productoMasVendido(){
+
+        String sql = "SELECT p.idProducto, p.nombre, p.valor " +
+                "FROM Producto p " +
+                "JOIN FacturaProducto f ON p.idProducto = f.idProducto " +
+                "GROUP BY p.idProducto, p.nombre, p.valor " +
+                "ORDER BY SUM(p.valor * f.cantidad) DESC " +
+                "LIMIT 1";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return new Producto(
+                        rs.getInt("idProducto"),
+                        rs.getString("nombre"),
+                        rs.getFloat("valor")
+                );
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

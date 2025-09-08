@@ -9,4 +9,5 @@ public interface DAOProducto {
     public void insert (Producto nuevoProducto);
     public void update (Producto nuevoProducto);
     public void delete (int id);
+    public Producto productoMasVendido();
 }
