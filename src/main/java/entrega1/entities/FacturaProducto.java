@@ -35,4 +35,14 @@ public class FacturaProducto {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+
+    @Override
+    public String toString() {
+        return "FacturaProducto {\n" +
+                "  factura=" + factura + ",\n" +
+                "  producto=" + producto + ",\n" +
+                "  cantidad=" + cantidad + "\n" +
+                '}';
+    }
+
 }
