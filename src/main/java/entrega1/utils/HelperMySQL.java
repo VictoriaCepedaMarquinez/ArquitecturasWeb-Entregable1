@@ -132,7 +132,7 @@ public class HelperMySQL {
         for (CSVRecord row : registros) {
             Factura nuevaFactura = new Factura(
                     Integer.parseInt(row.get("idFactura")),
-                    Integer.parseInt(row.get("idCliente"))
+                    cliente.get(Integer.parseInt(row.get("idCliente")))
             );
             factura.insert(nuevaFactura);
         }

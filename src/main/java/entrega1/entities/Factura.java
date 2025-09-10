@@ -2,11 +2,11 @@ package entrega1.entities;
 
 public class Factura {
     private int idFactura;
-    private int idCliente;
+    private Cliente cliente;
 
-    public Factura(int idFactura, int idCliente) {
+    public Factura(int idFactura, Cliente cliente) {
         this.idFactura = idFactura;
-        this.idCliente = idCliente;
+        this.cliente = cliente;
     }
 
     public Factura() {}
@@ -19,14 +19,13 @@ public class Factura {
         this.idFactura = idFactura;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
-
 
     @Override
     public String toString() {
