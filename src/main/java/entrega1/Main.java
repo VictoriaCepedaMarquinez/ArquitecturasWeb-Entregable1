@@ -21,16 +21,16 @@ public class Main {
         helper.createTables();
         helper.rellenarTablas();
 
-        // 1. Crear la conexión (recurso compartido)
+       // 1. Crear la conexión (recurso compartido)
         Connection cn = ConnectionManagerMySQL.getInstance().getConnection();
 
 
         // 2. Crear los DAOs principales
-        FacturaDAO facturaDAO = new FacturaDAO(cn);
-        ProductoDAO productoDAO = new ProductoDAO(cn);
+        FacturaDAO facturaDAO = MySQLFactory.getInstance().getFacturaDAO();
+        ProductoDAO productoDAO = MySQLFactory.getInstance().getProductoDAO();
 
         // 3. Inyectar DAOs en el DAO compuesto
-        FacturaProductoDAO facturaProductoDAO = new FacturaProductoDAO(cn, facturaDAO, productoDAO);
+        FacturaProductoDAO facturaProductoDAO = MySQLFactory.getInstance().getFacturaProductoDAO();
 
 
         System.out.println("Ejercicio 3:");

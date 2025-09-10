@@ -34,8 +34,6 @@ public class FacturaProductoDAO implements DAOFacturaProducto {
 
                     Factura factura = facturaDAO.get(id1);
                     Producto producto = productoDAO.get(id2);
-                    rs.close();
-                    cn.close();
 
                     return new FacturaProducto(factura, producto, rs.getInt(1));
                 } else {
@@ -56,7 +54,7 @@ public class FacturaProductoDAO implements DAOFacturaProducto {
             ps.setInt(2, facturaProducto.getProducto().getIdProducto());
             ps.setInt(3, facturaProducto.getCantidad());
             ps.executeUpdate();
-            cn.close();
+
         } catch (SQLException e) {
             throw new RuntimeException("Error al insertar la factura con id: " + facturaProducto.getFactura().getIdFactura(), e);
         }

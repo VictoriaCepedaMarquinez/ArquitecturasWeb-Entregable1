@@ -5,11 +5,8 @@ import entrega1.entities.FacturaProducto;
 import entrega1.entities.Factura;
 import entrega1.entities.Producto;
 import entrega1.factory.AbstractFactory;
-import entrega1.repository.mysql.ClienteDAO;
+import entrega1.repository.mysql.*;
 import entrega1.repository.mysql.FacturaDAO;
-import entrega1.repository.mysql.FacturaProductoDAO;
-import entrega1.repository.mysql.FacturaDAO;
-import entrega1.repository.mysql.ProductoDAO;
 import org.apache.commons.csv.CSVRecord;
 
 import java.lang.reflect.InvocationTargetException;
@@ -129,10 +126,11 @@ public class HelperMySQL {
 
         FacturaDAO factura = chosenFactory.getFacturaDAO();
         registros = LectorCSV.leerCSV("src/main/resources/data/facturas.csv");
+        ClienteDAO clienteDAO = MySQLFactory.getInstance().getClienteDAO();
         for (CSVRecord row : registros) {
             Factura nuevaFactura = new Factura(
                     Integer.parseInt(row.get("idFactura")),
-                    cliente.get(Integer.parseInt(row.get("idCliente")))
+                    clienteDAO.get(Integer.parseInt(row.get("idCliente")))
             );
             factura.insert(nuevaFactura);
         }
@@ -140,8 +138,8 @@ public class HelperMySQL {
 
         FacturaProductoDAO facturaProducto = chosenFactory.getFacturaProductoDAO();
         registros = LectorCSV.leerCSV("src/main/resources/data/facturas-productos.csv");
-        ProductoDAO productoDAO = new ProductoDAO(conn);
-        FacturaDAO  facturaDAO = new FacturaDAO(conn);
+        ProductoDAO productoDAO = MySQLFactory.getInstance().getProductoDAO();
+        FacturaDAO  facturaDAO = MySQLFactory.getInstance().getFacturaDAO();
         for (CSVRecord row : registros) {
 
             FacturaProducto nuevaFacturaProducto = new FacturaProducto(

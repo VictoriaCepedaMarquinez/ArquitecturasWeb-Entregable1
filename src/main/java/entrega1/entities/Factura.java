@@ -31,7 +31,7 @@ public class Factura {
     public String toString() {
         return "Factura{" +
                 "idFactura=" + idFactura +
-                ", idCliente=" + idCliente +
+                ", cliente=" + cliente +
                 '}';
     }
 }
