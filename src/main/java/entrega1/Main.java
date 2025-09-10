@@ -42,6 +42,9 @@ public class Main {
         System.out.println();
 
         System.out.println("Ejercicio 4:");
+        ClienteDAO c1 =chosenFactory.getClienteDAO();
+        c1.listarClientesPorFacturacion();
+
 
 
 

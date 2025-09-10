@@ -78,4 +78,36 @@ public class ClienteDAO implements DAOCliente {
         return cliente;
     }
 
+    public void listarClientesPorFacturacion() {
+        try {
+            String sql = "SELECT c.idCliente, c.nombre, c.email, SUM(fp.cantidad * p.valor) AS totalFacturado " +
+                    "FROM Cliente c " +
+                    "JOIN Factura f ON c.idCliente = f.idCliente " +
+                    "JOIN FacturaProducto fp ON f.idFactura = fp.idFactura " +
+                    "JOIN Producto p ON fp.idProducto = p.idProducto " +
+                    "GROUP BY c.idCliente, c.nombre, c.email " +
+                    "ORDER BY totalFacturado DESC";
+
+            PreparedStatement stmt = conexion.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            System.out.println("Clientes ordenados por monto facturado:");
+            while (rs.next()) {
+                int id = rs.getInt("idCliente");
+                String nombre = rs.getString("nombre");
+                String email = rs.getString("email");
+                double totalFacturado = rs.getDouble("totalFacturado");
+
+                System.out.println("ID: " + id + " | Nombre: " + nombre +
+                        " | Email: " + email + " | Total Facturado: $" + totalFacturado);
+            }
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
