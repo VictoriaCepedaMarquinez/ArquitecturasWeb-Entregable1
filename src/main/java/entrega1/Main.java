@@ -17,10 +17,21 @@ public class Main {
     public static void main(String[] args) throws SQLException {
 
         HelperMySQL helper = new HelperMySQL();
-
         helper.dropTables();
         helper.createTables();
         helper.rellenarTablas();
+
+        // 1. Crear la conexión (recurso compartido)
+        Connection cn = ConnectionManagerMySQL.getInstance().getConnection();
+
+
+        // 2. Crear los DAOs principales
+        FacturaDAO facturaDAO = new FacturaDAO(cn);
+        ProductoDAO productoDAO = new ProductoDAO(cn);
+
+        // 3. Inyectar DAOs en el DAO compuesto
+        FacturaProductoDAO facturaProductoDAO = new FacturaProductoDAO(cn, facturaDAO, productoDAO);
+
 
         System.out.println("Ejercicio 3:");
         AbstractFactory chosenFactory = AbstractFactory.getInstance(1);
