@@ -7,9 +7,11 @@ import java.sql.*;
 
 public class FacturaDAO implements DAOFactura {
     private final Connection cn;
+    private final ClienteDAO clienteDAO;
 
-    public FacturaDAO(Connection cn) {
+    public FacturaDAO(Connection cn,  ClienteDAO clienteDAO) {
         this.cn = cn;
+        this.clienteDAO = clienteDAO;
     }
 
     @Override
@@ -21,7 +23,7 @@ public class FacturaDAO implements DAOFactura {
                 if(rs.next()) {
                     Factura factura = new Factura();
                     factura.setIdFactura(rs.getInt("idFactura"));
-                    factura.setIdCliente(rs.getInt("idCliente"));
+                    factura.setCliente(this.clienteDAO.get(rs.getInt("idCliente")));
                     return factura;
                 } else {
                     return null;
@@ -37,7 +39,7 @@ public class FacturaDAO implements DAOFactura {
         final String sql = "INSERT INTO Factura (idFactura, idCliente) VALUES (?, ?)";
         try(PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setInt(1, factura.getIdFactura());
-            ps.setInt(2, factura.getIdCliente());
+            ps.setInt(2, factura.getCliente().getIdCliente());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error al insertar la factura con id: " + factura.getIdFactura(), e);
@@ -48,7 +50,7 @@ public class FacturaDAO implements DAOFactura {
     public void update(Factura factura) {
         final String sql = "UPDATE Factura SET idCliente = ? WHERE idFactura = ?";
         try(PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setInt(1, factura.getIdCliente());
+            ps.setInt(1, factura.getCliente().getIdCliente());
             ps.setInt(2, factura.getIdFactura());
             ps.executeUpdate();
         } catch (SQLException e) {
